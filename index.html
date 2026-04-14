@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Novlex Employees</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: linear-gradient(-45deg,#ff4d6d,#c77dff,#4cc9f0);
+            background-size: 400% 400%;
+            animation: bg 10s ease infinite;
+        }
+
+        @keyframes bg {
+            0% {background-position:0% 50%;}
+            50% {background-position:100% 50%;}
+            100% {background-position:0% 50%;}
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            padding: 15px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .card {
+            width: 320px;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .role {
+            color: gray;
+            margin-bottom: 10px;
+        }
+
+        .log {
+            font-size: 12px;
+            background: #f1f5f9;
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkred;
+        }
+    </style>
+
+    <script>
+        async function deleteUser(name){
+            await fetch("/users/" + name, { method: "DELETE" });
+            location.reload();
+        }
+    </script>
+</head>
+
+<body>
+
+<h1>Novlex Employees</h1>
+
+<div class="container">
+
+{% for u in users %}
+<div class="card">
+
+    <div class="name">{{u[0]}}</div>
+    <div class="role">{{u[1]}}</div>
+
+    <b>Attendance Logs</b>
+
+    {% for l in logs %}
+        {% if l[0] == u[0] %}
+            <div class="log">
+                {{l[1]}} | {{l[2]}} | {{l[3]}}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <button onclick="deleteUser('{{u[0]}}')">Delete</button>
+</div>
+{% endfor %}
+
+</div>
+
+</body>
+</html>
